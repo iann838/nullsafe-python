@@ -1,5 +1,4 @@
-from typing import Any, Generic, TypeVar
-from functools import wraps
+from typing import Any, Generic, TypeVar, Union
 
 
 T = TypeVar("T")
@@ -7,10 +6,10 @@ T = TypeVar("T")
 
 class NullSafe:
 
-    def __getattr__(self, k: str):
+    def __getattr__(self, k: str) -> "NullSafe":
         return undefined
 
-    def __getitem__(self, k: str):
+    def __getitem__(self, k: str) -> "NullSafe":
         return undefined
 
     def __bool__(self):
@@ -41,7 +40,7 @@ class NullSafeProxy(Generic[T]):
     def __init__(self, o: T) -> None:
         self.__o = o
 
-    def __getitem__(self, k: str) -> Any:
+    def __getitem__(self, k: str) -> Union[Any,  NullSafe]:
         try:
             val = self.__o.__getitem__(k)
             if val is None:
@@ -50,7 +49,7 @@ class NullSafeProxy(Generic[T]):
         except (KeyError, AttributeError):
             return undefined
 
-    def __getattr__(self, name: str) -> Any:
+    def __getattr__(self, name: str) -> Union[Any,  NullSafe]:
         val = getattr(self.__o, name, undefined)
         return undefined if val is None else val
 
@@ -59,8 +58,14 @@ class NullSafeProxy(Generic[T]):
             return super().__setattr__(name, value)
         raise AttributeError(f"'{self.__class__.__name__}' object can't set attribute")
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__module__}.{self.__class__.__name__}({repr(self.__o)})"
 
-def nullsafe(o: T) -> T:
+    def __str__(self) -> str:
+        return str(self.__o)
+
+
+def nullsafe(o: T) -> Union[T, NullSafe, NullSafeProxy[T]]:
     if o == None:
         return undefined
     return NullSafeProxy(o)
