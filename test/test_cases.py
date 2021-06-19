@@ -10,6 +10,15 @@ class TestClassOne:
     subscriptable: dict
 
 
+class TestClassCallable:
+
+    existent: int = 123
+    inexistent: str
+    
+    def caller(self, some: str, arg: int):
+        return f"{some}{arg}"
+
+
 class TestClassTwo:
 
     existent: str
@@ -205,3 +214,28 @@ def test_null_combined():
     assert _(o.subscriptable)["inexistent"].existent is undefined
     assert _(o.subscriptable)["inexistent"].existent is undefined
     assert o.subscriptable["existent"].existent == 123
+
+
+def test_null_call():
+    o = TestClassCallable()
+    try:
+        o.inexistent
+        assert False
+    except AttributeError as e:
+        assert "inexistent" in str(e)
+    assert _(o).inexistent() is undefined
+    assert _(o).inexistent() == NullSafe()
+    assert _(o).inexistent().inexistent is undefined
+    assert _(o).inexistent.inexistent() is undefined
+    assert _(o).inexistent.inexistent["dsrghsuiorgh"]() is undefined
+    assert _(o).inexistent("douihgrf", 35).inexistent["dsrghsuiorgh"]() is undefined
+    assert _(o).caller("some", 2) == "some2"
+
+    o = {"caller": TestClassCallable.caller}
+    assert _(o)["inexistent"]() is undefined
+    assert _(o)["inexistent"]() == NullSafe()
+    assert _(o)["inexistent"]().inexistent is undefined
+    assert _(o)["inexistent"]["inexistent"]() is undefined
+    assert _(o)["inexistent"]["inexistent"]["dsrghsuiorgh"]() is undefined
+    assert _(o)["inexistent"]("douihgrf", 35)["inexistent"]["dsrghsuiorgh"]() is undefined
+    assert _(o)["caller"]({"fakeself"}, "some", 2) == "some2"

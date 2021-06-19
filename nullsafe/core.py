@@ -20,6 +20,9 @@ class NullSafe:
             return True
         return False
 
+    def __call__(self, *args: Any, **kwds: Any) -> "NullSafe":
+        return undefined
+
     def __repr__(self) -> str:
         return "undefined"
 

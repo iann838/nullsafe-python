@@ -58,7 +58,7 @@ Proxy class for granting nullsafe abilities to an object.
 
 No argument needed.
 
-Nullish class with with nullsafe abilities. Instances will have a falsy boolean evaluation, equity comparison (`==`) to `None` and instance of `NullSafe` returns `True`, otherwise `False`. Identity comparison (`is`) to `None` will return `False`.
+Nullish class with with nullsafe abilities. Instances will have a falsy boolean evaluation, equity comparison (`==`) to `None` and instance of `NullSafe` returns `True`, otherwise `False`. Identity comparison (`is`) to `None` will return `False`. It also has a `__call__` method that always returns `undefined`.
 
 ### variable `undefined: NullSafe`
 
@@ -114,6 +114,9 @@ assert _(o.existent).inexistent.nested is undefined
 
 # o.maybe?.inexistent?.nested
 assert _(_(o).maybe).inexistent.nested is undefined
+
+# o.inexistent?.inexistcall("anything").inexistent.nested().final
+assert _(o).inexistent.inexistcall("anything").inexistent.nested().final is undefined
 ```
 
 ### Null safe item access
@@ -136,6 +139,9 @@ assert _(o["existent"])["inexistent"]["nested"] is undefined
 
 # o.maybe?.inexistent?.nested
 assert _(_(o)["maybe"])["inexistent"]["nested"] is undefined
+
+# o.inexistent?.inexistcall("anything").inexistent.nested().final
+assert _(o)["inexistent"]["inexistcall"]("anything")["inexistent"]["nested"]()["final"] is undefined
 ```
 
 ### Null safe post evaluation
@@ -155,6 +161,9 @@ assert not _(o.nay).inexistent       # bool(undefined) == False
 
 # o.nay?.inexistent.nested
 assert _(o.nay).inexistent.nested is undefined
+
+# o.nay?.inexistent().nested
+assert _(o.nay).inexistent().nested is undefined
 ```
 
 ```python
@@ -163,11 +172,12 @@ o["nay"] = None
 
 # o.nay?.inexistent
 assert _(o["nay"])["inexistent"] is undefined
-assert not _(o["nay"])["inexistent"]
 
 # o.nay?.inexistent.nested
 assert _(o["nay"])["inexistent"]["nested"] is undefined
-assert not _(o["nay"])["inexistent"]["nested"]
+
+# o.nay?.inexistent().nested
+assert _(o["nay"])["inexistent"]()["nested"] is undefined
 ```
 
 ### Combined usage
