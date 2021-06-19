@@ -64,7 +64,7 @@ Nullish class with with nullsafe abilities. Instances will have a falsy boolean 
 
 Instance of `Nullsafe`, this instance will be returned for all nullish access in a proxied object, enabling identity comparison `value is undefined` for code clarity.
 
-### function `nullsafe: (o: T) -> T`
+### function `nullsafe: (o: T) -> T | NullSafe | NullSafeProxy[T]`
 
 Receives an object `o` as argument.
 
@@ -74,7 +74,7 @@ return `undefined` if `o` is `None` or `undefined`, otherwise return the proxied
 
 This function is **generic typed** (`(o: T) -> T`), code autocompletions and linters functionalities will remain. Disclaimer: If the object was not typed before proxy, it obviously won't come out typed out of the blue.
 
-### function `_: (o: T) -> T` (alias to `nullsafe`)
+### function `_: (o: T) -> T | NullSafe | NullSafeProxy[T]` (alias to `nullsafe`)
 
 Alias to `nullsafe`, used for better code clarity.
 
