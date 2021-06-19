@@ -17,7 +17,7 @@ class Dummy:
     pass
 ```
 
-Normal Python code
+Normal Python code:
 
 ```python
 o = Dummy()
@@ -42,29 +42,29 @@ if value is not undefined:
     print("accessed")
 ```
 
-## Documentation
+# Documentation
 
-### Basics
+## Basics
 
 There are 5 values importable in nullsafe root:
 
-#### class `NullSafeProxy: (o: T)`
+### class `NullSafeProxy: (o: T)`
 
 Receives an object `o` on instantiation.
 
 Proxy class for granting nullsafe abilities to an object.
 
-#### class `NullSafe: ()`
+### class `NullSafe: ()`
 
 No argument needed.
 
 Nullish class with with nullsafe abilities. Instances will have a falsy boolean evaluation, equity comparison (`==`) to `None` and instance of `NullSafe` returns `True`, otherwise `False`. Identity comparison (`is`) to `None` will return `False`.
 
-#### variable `undefined: NullSafe`
+### variable `undefined: NullSafe`
 
 Instance of `Nullsafe`, this instance will be returned for all nullish access in a proxied object, enabling identity comparison `value is undefined` for code clarity.
 
-#### function `nullsafe: (o: T) -> T`
+### function `nullsafe: (o: T) -> T`
 
 Receives an object `o` as argument.
 
@@ -74,27 +74,27 @@ return `undefined` if `o` is `None` or `undefined`, otherwise return the proxied
 
 This function is **generic typed** (`(o: T) -> T`), code autocompletions and linters functionalities will remain. Disclaimer: If the object was not typed before proxy, it obviously won't come out typed out of the blue.
 
-#### function `_: (o: T) -> T` (alias to `nullsafe`)
+### function `_: (o: T) -> T` (alias to `nullsafe`)
 
-Alias to nullsafe, used for better code clarity.
+Alias to `nullsafe`, used for better code clarity.
 
 The examples shown will be using `_` instead of `nullsafe` for code clarity. For better understanding, the Javascript equivalents will be shown as comments.
 
-### Implementation
+## Implementation
 
 Nullsafe abilities are granted after proxying an object through `NullSafeProxy`. To proxy an object pass it through `_()` or `nullsafe()`. Due to language limitation, the implementation does not follow the "return the first nullish value in chain", instead it "extend the a custom nullish value until the end of chain". Inexistent values of a proxied object and its subsequent values in chain will return `undefined`.
 
-### Import
+## Import
 
 ```python
 from nullsafe import undefined, _
 ```
 
-### Usage
+## Usage
 
 There are various way to get a nullsafe proxied object.
 
-#### Null safe attribute access
+### Null safe attribute access
 
 Proxied object doing a possibly `AttributeError` access.
 
@@ -138,7 +138,7 @@ assert _(o["existent"])["inexistent"]["nested"] is undefined
 assert _(_(o)["maybe"])["inexistent"]["nested"] is undefined
 ```
 
-#### Null safe post evaluation
+### Null safe post evaluation
 
 Possibly `None` or `undefined` object doing possibly `AttributeError` or `KeyError` access.
 
@@ -170,7 +170,7 @@ assert _(o["nay"])["inexistent"]["nested"] is undefined
 assert not _(o["nay"])["inexistent"]["nested"]
 ```
 
-#### Combined usage
+### Combined usage
 
 Of course you can combine different styles.
 
@@ -178,11 +178,11 @@ Of course you can combine different styles.
 assert _(o).inexistent["inexistent"].inexistent.inexistent["inexistent"]["inexistent"] is undefined
 ```
 
-### Limitations
+## Limitations
 
 List of limitations that you may encounter.
 
-#### `undefined` behavior
+### `undefined` behavior
 
 `undefined` is actually an instance of `NullSafe`, the actual mechanism used for nullsafe chaining, it cannot self rip the nullsafe functionality when the chain ends (because it doesn't know), so this following actually possible and probably not the wanted behavior.
 
@@ -192,7 +192,7 @@ val = _(o).inexistent
 assert val.another_inexistent is undefined
 ```
 
-#### Post evaluation
+### Post evaluation
 
 In other languages like Javascript, it checks for each item in the chain and return `undefined` on the first nullish value, which in fact is post-evaluated. This is not possible in python because it raises an `AttributeError` or `KeyError` on access attempt, unless it returns `None` (see [one of the available usage](#null-safe-post-evaluation)), so it must proxy the instance that may contain the attr or key before accessing.
 
