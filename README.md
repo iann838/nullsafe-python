@@ -103,8 +103,8 @@ o = Dummy()
 
 # o.inexistent
 assert _(o).inexistent is undefined
-assert _(o).inexistent == None # Same to all below
-assert not _(o).inexistent # Same to all below
+assert _(o).inexistent == None   # undefined == None
+assert not _(o).inexistent       # bool(undefined) == False
 
 # o.inexistent?.nested
 assert _(o).inexistent.nested is undefined
@@ -125,8 +125,8 @@ o = Dummy() # dict works too !
 
 # o.inexistent
 assert _(o)["inexistent"] is undefined
-assert _(o)["inexistent"] == None # Same to all below
-assert not _(o)["inexistent"] # Same to all below
+assert _(o)["inexistent"] == None    # undefined == None
+assert not _(o)["inexistent"]        # bool(undefined) == False
 
 # o.inexistent?.nested
 assert _(o)["inexistent"]["nested"] is undefined
@@ -150,8 +150,8 @@ o.nay = None
 
 # o.nay?.inexistent
 assert _(o.nay).inexistent is undefined
-assert _(o.nay).inexistent == None # Same to all below
-assert not _(o.nay).inexistent # Same to all below
+assert _(o.nay).inexistent == None   # undefined == None
+assert not _(o.nay).inexistent       # bool(undefined) == False
 
 # o.nay?.inexistent.nested
 assert _(o.nay).inexistent.nested is undefined
