@@ -51,13 +51,8 @@ class NullSafeProxy(Generic[T]):
             return undefined
 
     def __getattr__(self, name: str) -> Any:
-        try:
-            val = getattr(self.__o, name)
-            if val is None:
-                return undefined
-            return val
-        except AttributeError:
-            return undefined
+        val = getattr(self.__o, name, undefined)
+        return undefined if val is None else val
 
     def __setattr__(self, name: str, value: Any) -> None:
         if name == "_NullSafeProxy__o":
