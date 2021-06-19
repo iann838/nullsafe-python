@@ -10,10 +10,17 @@ pip install nullsafe
 
 ## Quick Start
 
+Dummy Class
+
+```python
+class Dummy:
+    pass
+```
+
 Normal Python code
 
 ```python
-o = object()
+o = Dummy()
 
 try:
     value = o.inexistent
@@ -27,7 +34,7 @@ With nullsafe:
 ```python
 from nullsafe import undefined, _
 
-o = object()
+o = Dummy()
 
 value = _(o).inexistent
 
@@ -92,7 +99,7 @@ There are various way to get a nullsafe proxied object.
 Proxied object doing a possibly `AttributeError` access.
 
 ```python
-o = SomeClass()
+o = Dummy()
 
 # o.inexistent
 assert _(o).inexistent is undefined
@@ -114,7 +121,7 @@ assert _(_(o).maybe).inexistent.nested is undefined
 Proxied object doing a possibly `KeyError` access.
 
 ```python
-o = SomeClass() # dict works too !
+o = Dummy() # dict works too !
 
 # o.inexistent
 assert _(o)["inexistent"] is undefined
@@ -138,7 +145,7 @@ Possibly `None` or `undefined` object doing possibly `AttributeError` or `KeyErr
 Note: This only works if the seeking value is accessible, see [limitations](#post-evaluation)
 
 ```python
-o = SomeClass() # dict works too !
+o = Dummy() # dict works too !
 o.nay = None
 
 # o.nay?.inexistent
@@ -151,7 +158,7 @@ assert _(o.nay).inexistent.nested is undefined
 ```
 
 ```python
-o = SomeClass() # dict works too !
+o = Dummy() # dict works too !
 o["nay"] = None
 
 # o.nay?.inexistent
