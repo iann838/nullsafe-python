@@ -21,7 +21,7 @@ if sys.version_info.major != 3 and sys.version_info.minor < 7:
 
 setup(
     name="nullsafe",
-    version="0.1.0",
+    version="0.1.1",
     author="Paaksing",
     author_email="paaksingtech@gmail.com",
     url="https://github.com/paaksing/nullsafe-python",
