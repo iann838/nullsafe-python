@@ -24,9 +24,8 @@ o = Dummy()
 
 try:
     value = o.inexistent
-    print("accessed")
 except AttributeError:
-    value = None
+    print("oops")
 ```
 
 With nullsafe:
@@ -38,9 +37,11 @@ o = Dummy()
 
 value = _(o).inexistent
 
-if value is not undefined:
-    print("accessed")
+if value is undefined:
+    print("oops")
 ```
+
+Note that `if not value` and `if value == None` also works.
 
 # Documentation
 
@@ -78,8 +79,6 @@ This function is **generic typed** (`(o: T) -> T`), code autocompletions and lin
 
 Alias to `nullsafe`, used for better code clarity.
 
-The examples shown will be using `_` instead of `nullsafe` for code clarity. For better understanding, the Javascript equivalents will be shown as comments.
-
 ## Implementation
 
 Nullsafe abilities are granted after proxying an object through `NullSafeProxy`. To proxy an object pass it through `_()` or `nullsafe()`. Due to language limitation, the implementation does not follow the "return the first nullish value in chain", instead it "extend `undefined` (custom nullish value) until the end of chain". Inexistent values of a proxied object and its subsequent values in chain will return `undefined`.
@@ -92,7 +91,9 @@ from nullsafe import undefined, _
 
 ## Usage
 
-There are various way to get a nullsafe proxied object.
+Various ways of using nullsafe.
+
+The examples shown will be using the `_` import instead of `nullsafe` for code clarity. For better understanding, the Javascript equivalents will be shown as comments.
 
 ### Null safe attribute access
 
