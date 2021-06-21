@@ -239,3 +239,11 @@ def test_null_call():
     assert _(o)["inexistent"]["inexistent"]["dsrghsuiorgh"]() is undefined
     assert _(o)["inexistent"]("douihgrf", 35)["inexistent"]["dsrghsuiorgh"]() is undefined
     assert _(o)["caller"]({"fakeself"}, "some", 2) == "some2"
+
+
+def test_iteration_fail():
+    try:
+        for _ in undefined:
+            assert False
+    except TypeError:
+        assert True

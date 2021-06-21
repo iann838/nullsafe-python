@@ -82,7 +82,7 @@ The examples shown will be using `_` instead of `nullsafe` for code clarity. For
 
 ## Implementation
 
-Nullsafe abilities are granted after proxying an object through `NullSafeProxy`. To proxy an object pass it through `_()` or `nullsafe()`. Due to language limitation, the implementation does not follow the "return the first nullish value in chain", instead it "extend the a custom nullish value until the end of chain". Inexistent values of a proxied object and its subsequent values in chain will return `undefined`.
+Nullsafe abilities are granted after proxying an object through `NullSafeProxy`. To proxy an object pass it through `_()` or `nullsafe()`. Due to language limitation, the implementation does not follow the "return the first nullish value in chain", instead it "extend `undefined` (custom nullish value) until the end of chain". Inexistent values of a proxied object and its subsequent values in chain will return `undefined`.
 
 ## Import
 
@@ -194,7 +194,7 @@ List of limitations that you may encounter.
 
 ### `undefined` behavior
 
-`undefined` is actually an instance of `NullSafe`, the actual mechanism used for nullsafe chaining, it cannot self rip the nullsafe functionality when the chain ends (because it doesn't know), so this following actually possible and probably not the wanted behavior.
+`undefined` is actually an instance of `NullSafe`, the actual mechanism used for nullsafe chaining, it cannot self rip the nullsafe functionality when the chain ends (because it doesn't know), so the following instruction is technically correct but probably not the wanted behavior.
 
 ```python
 val = _(o).inexistent

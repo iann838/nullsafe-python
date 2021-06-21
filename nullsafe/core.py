@@ -32,6 +32,9 @@ class NullSafe:
     def __setattr__(self, name: str, value: Any) -> None:
         raise AttributeError(f"'{self.__class__.__name__}' object can't set attribute")
 
+    def __iter__(self):
+        raise TypeError(f"'{repr(self)}' object is not iterable")
+
 
 undefined = NullSafe()
 
