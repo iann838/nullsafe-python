@@ -59,7 +59,7 @@ Proxy class for granting nullsafe abilities to an object.
 
 No argument needed.
 
-Nullish class with with nullsafe abilities. Instances will have a falsy boolean evaluation, equity comparison (`==`) to `None` and instance of `NullSafe` returns `True`, otherwise `False`. Identity comparison (`is`) to `None` will return `False`. It also has a `__call__` method that always returns `undefined`.
+Nullish class with nullsafe abilities. Instances will have a falsy boolean evaluation, equity comparison (`==`) to `None` and `isinstance` of `NullSafe` returns `True`, otherwise `False`. Identity comparison (`is`) to `None` will return `False`. It also has a `__call__` method that always returns `undefined`.
 
 ### variable `undefined: NullSafe`
 
@@ -71,9 +71,9 @@ Receives an object `o` as argument.
 
 Helper function that checks if object is nullish and return the proxied object.
 
-return `undefined` if `o` is `None` or `undefined`, otherwise return the proxied object `NullSafeProxy[T]`.
+returns `undefined` if `o` is `None` or `undefined`, otherwise returns the proxied object `NullSafeProxy[T]`.
 
-This function is **generic typed** (`(o: T) -> T`), code autocompletions and linters functionalities will remain. Disclaimer: If the object was not typed before proxy, it obviously won't come out typed out of the blue.
+This function is **generic typed** (`(o: T) -> T`), code autocompletions and linters functionalities will remain. Disclaimer: If the object is not typed before proxying, it obviously won't come out typed out of the blue.
 
 ### function `_: (o: T) -> T | NullSafe | NullSafeProxy[T]` (alias to `nullsafe`)
 
@@ -81,7 +81,7 @@ Alias to `nullsafe`, used for better code clarity.
 
 ## Implementation
 
-Nullsafe abilities are granted after proxying an object through `NullSafeProxy`. To proxy an object pass it through `_()` or `nullsafe()`. Due to language limitation, the implementation does not follow the "return the first nullish value in chain", instead it "extend `undefined` (custom nullish value) until the end of chain". Inexistent values of a proxied object and its subsequent values in chain will return `undefined`.
+Nullsafe abilities are granted after proxying an object through `NullSafeProxy`. To proxy an object pass it through `_()` or `nullsafe()`. Due to language limitation, the implementation does not follow the "return the first nullish value in chain", instead it will "extend `undefined` (custom nullish value) until the end of chain". Inexistent values of a proxied object and its subsequent values in chain will return `undefined`.
 
 ## Import
 
@@ -205,7 +205,7 @@ assert val.another_inexistent is undefined
 
 ### Post evaluation
 
-In other languages like Javascript, it checks for each item in the chain and return `undefined` on the first nullish value, which in fact is post-evaluated. This is not possible in python because it raises an `AttributeError` or `KeyError` on access attempt, unless it returns `None` (see [one of the available usage](#null-safe-post-evaluation)), so it must proxy the instance that may contain the attr or key before accessing.
+In other languages like Javascript, it checks for each item in the chain and return `undefined` on the first nullish value, which in fact is post-evaluated. This is not possible in python because it raises an `AttributeError` or `KeyError` on access attempt, unless it returns `None` (see [one of the available usage](#null-safe-post-evaluation)), so it must proxy the instance that may or may not contain the attribute or key before accessing.
 
 ```python
 try:
